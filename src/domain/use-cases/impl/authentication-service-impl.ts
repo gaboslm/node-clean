@@ -13,28 +13,20 @@ export class AuthenticationServiceImpl implements IAuthenticationService {
     @Adapter(CHECK_EMAIL_REPOSITORY) private readonly checkEmailRepository: ICheckEmailRepository) {
   }
 
-  async auth(data: IAuthenticationService.Params): Promise<IAuthenticationService.Result|IAuthenticationService.Error> {
-    try{
-      const account = await this.checkEmailRepository.checkEmail(data.email);
-      const isValid = await this.hashCompare.compare(data.password, account.password);
-      
-      if (isValid) {
-        const accessToken = await this.encrypt.encrypt(account);
-
-        return {
-          accessToken,
-          name: account.firstName
-        }
-      }
-    } catch(error){
-      return {
-        message: error.message,
-        status: 501,
-        code: "Authentication Service Error"
-      }
+  async auth(data: IAuthenticationService.Params): Promise<IAuthenticationService.Result> {
+    const account = await this.checkEmailRepository.checkEmail(data.email);
+    const isValid = await this.hashCompare.compare(data.password, account.password);
+    
+    if (!isValid) {
+      throw Error('Invalid password')
     }
 
-    return null;
+    const accessToken = await this.encrypt.encrypt(account);
+    
+    return {
+      accessToken,
+      name: account.firstName
+    }
   }
 
 }

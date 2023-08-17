@@ -11,17 +11,32 @@ export class AuthenticationController {
   }
 
   @Post()
-  async authController(@Body() data: IAuthenticationService.Params): Promise<IAuthenticationService.Result | any> {
+  async authController(@Body() data: IAuthenticationService.Params): Promise<IAuthenticationService.Result|IAuthenticationService.Error> {
+    
+    const {errors, isValid}: {errors: { [key: string]: string}, isValid: boolean } = ValidateFields.fieldsValidation(data);
 
-    const {errors, isValid} = ValidateFields.fieldsValidation(data);
+    if (!isValid){
+      return {
+        message: "Fullfield validation",
+        errors: Object.values(errors),
+      }
+    } 
 
-    if (!isValid) return {statusCode: 422, body: {"message": errors}}
+    try {
+      const result = await this.authenticationService.auth(data);
 
-    const result = await this.authenticationService.auth(data);
-
-    return {
+      return {
+        message: "Logged in successfully",
         accessToken: result.accessToken,
-        name: result.name
+      };
+      
+    } catch (error) { 
+      if (error) {
+        return {
+          message: error.message,
+        }
+      }
     }
+    
   }
 }
