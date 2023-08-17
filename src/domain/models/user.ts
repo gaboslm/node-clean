@@ -1,6 +1,7 @@
 export type UserModel = {
   id: string | number;
-  name: string;
+  firstName: string;
+  lastName: string;
   email: string;
   password: string;
   roles: UserRoleModel[];
@@ -8,7 +9,7 @@ export type UserModel = {
 
 export type UserRoleModel = [
   {
-    role: string
+    role: string,
   }
 ]
 

@@ -1,5 +1,5 @@
 export type UserEntity = {
-    // Attributes
+  // Attributes
 }
 
 export type AddUserParams = Omit<UserEntity, 'id'>

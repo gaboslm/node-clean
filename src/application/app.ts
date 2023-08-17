@@ -3,8 +3,9 @@ import {controllers} from "@/infrastructure/entry-points/api";
 import {services, adapters} from "@/infrastructure/driven-adapters/providers";
 
 @Container({
-    providers: [...services, ...adapters],
-    controllers: [...controllers]
+  imports: [],
+  providers: [...services, ...adapters],
+  controllers: [...controllers]
 })
 
 export class AppContainer {}
