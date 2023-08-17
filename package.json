@@ -4,7 +4,7 @@
    "description": "Awesome project developed with Clean Architecture",
    "scripts": {
       "start": "npm run build && node ./dist/index.js",
-      "build": "rimraf dist && ./node_modules/.bin/tsc -p tsconfig-build.json",
+      "build": "rimraf dist && ./node_modules/typescript/bin/tsc -p tsconfig-build.json",
       "watch": "nodemon --exec \"npm run build && node ./dist/index.js\" --watch src --ext ts"
    },
    "dependencies": {
